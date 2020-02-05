@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 12345678
+    url: jdbc:mysql://localhost:3306/xcc_zc?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+  thymeleaf:
+    prefix: classpath:/templates/html/
+
+
+logging:
+  file:
+    name: ./demo001-shiro/logs/spring-shiro.log
+  level:
+    root: warn
+    com.zing.demo001_shiro: debug
