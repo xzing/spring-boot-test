@@ -2,11 +2,20 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 12345678
+    password: 88888888
     url: jdbc:mysql://localhost:3306/xcc_zc?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-  thymeleaf:
-    prefix: classpath:/templates/html/
+#  thymeleaf:
+#    prefix: classpath:/templates/html/
 
+#MYBATIS
+mybatis:
+  type-aliases-package: com.zing.demo001_shiro.bean
+  mapper-locations: classpath*:/mapper/*/*-mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
 
 logging:
   file:

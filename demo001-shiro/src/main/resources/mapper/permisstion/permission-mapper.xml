@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zing.demo001_shiro.mapper.PermissionMapper">
+    <select id="allMenuPermission" resultType="com.zing.demo001_shiro.bean.MenuPermission">
+            SELECT
+                auto_id,
+                menu_name,
+                parent_id,
+                menu_key,
+                status,
+                creator,
+            create_time,
+            updater,
+            update_time
+            FROM
+                t_menu_permission
+            WHERE
+                status = 1;
+    </select>
+
+    <select id="allUrlPermission" resultType="com.zing.demo001_shiro.bean.UrlPermission">
+        SELECT
+            auto_id, permission_name, url, url_func, parent_id, status,
+            creator,
+            create_time,
+            updater,
+            update_time
+        from
+            t_url_permission
+        where
+            status = 1
+    </select>
+
+    <select id="allPermissionGroup" resultType="com.zing.demo001_shiro.bean.PermissionGroup">
+        SELECT
+            auto_id,
+            group_name,
+            group_desc,
+            group_type
+            status,
+            creator,
+            create_time,
+            updater,
+            update_time
+        from
+            t_permission_group
+        where
+            status = 1
+    </select>
+
+
+    <select id="allPermissionRelation" resultType="com.zing.demo001_shiro.bean.PermissionRelation">
+        SELECT
+            auto_id,
+            group_id,
+            permission_id,
+            permission_type,
+            sort_code,
+            status,
+            creator,
+            create_time,
+            updater,
+            update_time
+        from
+            t_permission_relation
+        where
+            status = 1
+    </select>
+
+    <select id="allRolesPermissionGroup" resultType="com.zing.demo001_shiro.bean.RolesPermissionGroup">
+        SELECT
+            auto_id,
+            status,
+            creator,
+            create_time,
+            updater,
+            update_time,
+            role_id,
+            group_id,
+            creator,
+            create_time,
+            updater,
+            update_time
+        from
+            t_roles_permission_group
+        where
+            status = 1
+    </select>
+
+
+    <select id="getRolesPermissionGroupByRoleId" resultType="com.zing.demo001_shiro.bean.PermissionGroup">
+        SELECT PG.auto_id     AS 'autoId',
+               PG.status      AS 'status',
+               PG.creator     AS 'creator',
+               PG.create_time AS 'createTime',
+               PG.updater     AS 'updater',
+               PG.update_time AS 'updateTime',
+               PG.group_name  AS 'groupName',
+               PG.group_desc  AS 'groupDesc',
+               PG.group_type  AS 'groupType'
+        from t_roles_permission_group RPG
+                 LEFT JOIN t_permission_group PG
+                           ON RPG.group_id = PG.auto_id
+        where RPG.role_id = #{roleId}
+          AND RPG.status = 1
+          AND PG.status = 1
+    </select>
+
+    <select id="findPermissionByPermissionGroupList" resultType="com.zing.demo001_shiro.bean.PermissionRelation">
+        SELECT auto_id,
+        group_id,
+        permission_id,
+        permission_type,
+        sort_code,
+        status,
+        creator,
+        create_time,
+        updater,
+        update_time
+        from t_permission_relation
+        where
+        status = 1
+        AND auto_id IN
+        <foreach collection="list" item="prId" index="index" open="(" close=")" separator=",">
+            #{prId}
+        </foreach>
+    </select>
+
+    <select id="findUrlPermissionWitchIdIn" resultType="com.zing.demo001_shiro.bean.UrlPermission">
+        SELECT auto_id,
+        permission_name,
+        url,
+        url_func,
+        parent_id,
+        status,
+        creator,
+        create_time,
+        updater,
+        update_time
+        from t_url_permission
+        where status = 1
+        AND auto_id IN
+        <foreach collection="list" item="uId" index="index" open="(" close=")" separator=",">
+            #{uId}
+        </foreach>
+    </select>
+    <select id="findMenuPermissionWitchIdIn" resultType="com.zing.demo001_shiro.bean.MenuPermission">
+        SELECT auto_id,
+        menu_name,
+        parent_id,
+        menu_key,
+        status,
+        creator,
+        create_time,
+        updater,
+        update_time
+        FROM t_menu_permission
+        WHERE status = 1
+        AND auto_id IN
+        <foreach collection="list" item="mid" index="index" open="(" close=")" separator=",">
+            #{mid}
+        </foreach>
+    </select>
+
+
+</mapper>

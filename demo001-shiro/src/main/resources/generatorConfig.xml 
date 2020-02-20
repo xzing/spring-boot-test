@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="simple" targetRuntime="MyBatis">
+        <jdbcConnection driverClass=" com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/xcc_zc?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai"
+                        userId="root"
+                        password="88888888"
+        />
+
+        <javaModelGenerator targetPackage="com.zing.demo001_shiro.bean.model" targetProject="src/main/java"/>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zing.demo001_shiro.mapper"
+                             targetProject="src/main/java"/>
+
+        <table tableName="t_system_permission"/>
+        <table tableName="t_roles_permission_group"/>
+        <table tableName="t_permission_relation"/>
+        <table tableName="t_permission_group"/>
+        <table tableName="t_menu_url_group"/>
+        <table tableName="t_company_permission_group"/>
+        <table tableName="t_company_data_limit"/>
+    </context>
+</generatorConfiguration>

@@ -7,24 +7,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * create at     2020/1/31 5:01 下午
- * shiro 主配置类
- *
- * @author zing
+ * @author zing create at 2020/2/17 4:52 下午
  * @version 0.0.1
  */
 @Configuration
 public class ShiroConfiguration {
-    /**
-     * 认证授权器
-     */
-    @Bean
-    public CustomizeRealm customizeRealm() {
-        return new CustomizeRealm();
-    }
 
-    @Bean
+
+    @Bean("securityManager")
     public DefaultWebSecurityManager securityManager(@Qualifier("customizeRealm") CustomizeRealm customizeRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(customizeRealm);
@@ -32,10 +27,22 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") SecurityManager securityManager,
+                                                         @Qualifier("tokenAccessFilter") TokenAccessFilter tokenAccessFilter,
+                                                         @Qualifier("urlAccessFilter") UrlAccessControlFilter urlAccessControlFilter) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // shiroFilterFactoryBean.setLoginUrl("login");
+        Map<String, String> chains = new LinkedHashMap<>();
+        chains.put("/auth/login", "anon");
+        chains.put("/**", "tokenFilter,urlFilter");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
+
+        Map<String, Filter> servletFilter = new LinkedHashMap<>();
+        servletFilter.put("tokenFilter", tokenAccessFilter);
+        servletFilter.put("urlFilter", urlAccessControlFilter);
+        shiroFilterFactoryBean.setFilters(servletFilter);
         return shiroFilterFactoryBean;
     }
+
+
 }
